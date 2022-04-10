@@ -10,7 +10,7 @@ exports.getPosts = (req, res, next) => {
     const currentPage = req.query.page || 1;
     const perPage = 2;
     let totalItems;
-    Post.find().countDocuments()
+    Post.find().countDocuments().populate('creator')
         .then(count => {
             totalItems = count;
             return Post.find()
@@ -107,7 +107,7 @@ exports.createPost = (req, res, next) => {
 
 exports.getPost = (req, res, next) => {
     const postId = req.params.postId;
-    Post.findById(postId)
+    Post.findById(postId).populate('creator')
         .then(post => {
             if (!post) {
                 const error = new Error('Could not find post');
