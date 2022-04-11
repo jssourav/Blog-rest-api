@@ -65,6 +65,12 @@ app.use((error, req, res, next) => {
 
 mongoose.connect('mongodb+srv://root:root@sourav0.njrcg.mongodb.net/rest-api?authSource=admin&replicaSet=atlas-txtz31-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true')
     .then(result => {
-        app.listen(8080);
+        const server = app.listen(8080);
+        const io = require('./socket').init(server);
+        // console.log(io);
+        io.on('connection', socket => {
+            console.log('Client Connected!');
+        });
+
     })
     .catch(err => console.log(err));
